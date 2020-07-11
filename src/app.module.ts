@@ -15,6 +15,7 @@ import { AuthGuard } from './middleware/auth.guard';
 import { RequestModule } from './request/request.module';
 import { RequestService } from './request/request.service';
 import { RequestSchema } from './request/request.model';
+import { CallMicroServices } from './call.micro.services';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { RequestSchema } from './request/request.model';
   providers: [
     AppService,
     LinksService,
+    CallMicroServices,
     RequestService,
     {
       provide: APP_FILTER,
