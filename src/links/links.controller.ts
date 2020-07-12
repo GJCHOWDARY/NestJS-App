@@ -62,11 +62,11 @@ export class LinksController {
         @Body('white_label_host') white_label_host: string,
         @Body('white_label_secret') white_label_secret: string,
     ) {
-        const newHost = await this.linksService.addNew(
+        const id = await this.linksService.addNew(
             white_label_host,
             white_label_secret,
         );
-        return { message: "New Host Created!", status: true };
+        return { message: "New Host Created!", id , status: true };
     }
 
     @Get('/getall')

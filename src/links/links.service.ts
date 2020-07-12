@@ -26,7 +26,7 @@ export class LinksService {
                 count: 0,
             });
             const result = await newProduct.save();
-            return result.id as string;
+            return result.id;
         }
     }
 
