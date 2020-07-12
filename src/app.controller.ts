@@ -44,7 +44,7 @@ export class AppController {
     return 'Calling by Event done!'
   }
 
-  @Get('redis_microservice')
+  @Post('redis_microservice')
   async callRedisMicroServices(@Body('data') data:any)  {
     return this.callMicroServices.saveDataRedis(data); 
   }
