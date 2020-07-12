@@ -32,6 +32,7 @@ export class RequestInterceptor implements NestInterceptor {
         req.user = {
           whitelabelHost: this.configService.get('WHITE_LABEL_HOST'),
           whitelabelSecret: this.configService.get('WHITE_LABEL_SECRET'),
+          url: this.configService.get('URI'),
           temp_user: true
         }
       } else {

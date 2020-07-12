@@ -1,5 +1,7 @@
 import {
     Controller,
+    Res,
+    Redirect,
     Post,
     Body,
     Get,
@@ -9,6 +11,8 @@ import {
     Patch,
     Put,
     Delete,
+    HttpCode,
+    Header,
     UseGuards
 } from '@nestjs/common';
 import { User } from './link.decorator';
@@ -23,44 +27,61 @@ export class LinksController {
     ) { }
 
     @Post('')
+    @Header('Content-type', 'application/json')
+    @HttpCode(200)
     async shortenedUrl(
         @Body() data: LinkDTO,
         @User('whitelabelHost') whitelabelHost: string,
         @User('whitelabelHost') whitelabelSecret: string,
+        @User('temp_user') temp_user: boolean,
+        @User('url') url: string,
     ) {
         const resData = await this.linksService.generateShortenedUrl(
             data,
             whitelabelHost,
             whitelabelSecret,
         );
-        return resData;
+        return {
+            url: data.url,
+            urlHash: resData,
+            shortUrl: `http://${whitelabelHost}/${resData}`
+        };
     }
 
-    @Post('new')
+    @Get('/geturl/:urlHash')
+    @Redirect('https://jyotheeswarchowdary.com', 302)
+    async urlHash(
+        @Param('urlHash') urlHash: string,
+    ) {
+        const url = await this.linksService.getUrlfromUrlHash(urlHash)
+        return { url };
+    }
+
+    @Post('/new')
     async addLink(
         @Body('white_label_host') white_label_host: string,
         @Body('white_label_secret') white_label_secret: string,
     ) {
-        const generatedId = await this.linksService.addNew(
+        const newHost = await this.linksService.addNew(
             white_label_host,
             white_label_secret,
         );
-        return { id: generatedId };
+        return { message: "New Host Created!", status: true };
     }
 
-    @Get('/')
+    @Get('/getall')
     async getAll() {
-        const products = await this.linksService.getAll();
-        return products;
+        const links = await this.linksService.getAll();
+        return links;
     }
 
-    @Get(':id')
+    @Get('/getone/:id')
     async getOne(@Param('id') id: string) {
         console.log('test')
         return this.linksService.getOne(id);
     }
 
-    @Put(':id')
+    @Put('/update/:id')
     async update(
         @Param('id') id: string,
         @Body('white_label_host') white_label_host: string,
@@ -70,7 +91,7 @@ export class LinksController {
         return null;
     }
 
-    @Delete(':id')
+    @Delete('/delete/:id')
     @UseGuards(AuthGuard)
     async remove(@Param('id') id: string) {
         await this.linksService.delete(id);

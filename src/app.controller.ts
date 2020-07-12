@@ -54,13 +54,4 @@ export class AppController {
     return this.callMicroServices.getDataRedis(); 
   }
 
-  @Get('grpc_microservice')
-  async callGrpcMicroServices(@Body('data') data:any)  {
-    return this.callMicroServices.saveDataRedis(data); 
-  }
-  
-  @Get('grpc_microservice')
-  async callGrpcMicroServices1()  {
-    return this.callMicroServices.getDataRedis(); 
-  }
 }

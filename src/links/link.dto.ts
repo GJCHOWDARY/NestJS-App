@@ -1,6 +1,6 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, Matches } from 'class-validator';
 
 export class LinkDTO {
   @IsNotEmpty()
-  url: string;
+   url: string;
 }
