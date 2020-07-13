@@ -2,6 +2,7 @@ import { Controller, Get, Post, Delete, Put, Body, Param, Logger } from '@nestjs
 import { AppService } from './app.service';
 import { ConfigService } from '@nestjs/config';
 import { CallMicroServices } from './call.micro.services';
+import { appDTO } from './app.dto';
 
 @Controller()
 export class AppController {
@@ -19,7 +20,7 @@ export class AppController {
   }
 
   @Post('tcp_microservice')
-  async PostTcpMicroServices(@Body('data') data:any)  {
+  async PostTcpMicroServices(@Body() data: appDTO)  {
     return this.callMicroServices.saveData(data); 
   }
 
@@ -45,7 +46,7 @@ export class AppController {
   }
 
   @Post('redis_microservice')
-  async callRedisMicroServices(@Body('data') data:any)  {
+  async callRedisMicroServices(@Body() data: appDTO)  {
     return this.callMicroServices.saveDataRedis(data); 
   }
   
